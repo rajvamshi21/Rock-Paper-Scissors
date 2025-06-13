@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: rgb(0, 0, 0);
+      }
+      .left-buttons {
+        background-color: rgb(59, 57, 59);
+        border: none;
+        height: 70px;
+        width: 70px;
+        border-radius: 70px;
+        color: white;
+        margin-right: 10px;
+        font-size: 45px;
+        margin-bottom: 10px;
+      }
+      .right-buttons {
+        background-color: rgb(252, 173, 26);
+        border: none;
+        height: 70px;
+        width: 70px;
+        border-radius: 70px;
+        color: white;
+        margin-right: 10px;
+        font-size: 45px;
+      }
+      .clear-button{
+        background-color: rgb(59, 57, 59);
+        font-size: 20px;
+        height: 70px;
+        width: 70px;
+        border-radius: 70px;
+        color: white;
+        border: none;
+        
+      }
+      .input-tab {
+        color: white;
+        font-size: 45px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <!-- Create an element to display the calculation. -->
+    <p class="js-calculation input-tab"></p>
+
+    <p>
+      <button class="left-buttons" onclick="
+        updateCalculation('1');
+      ">1</button>
+
+      <button class="left-buttons" onclick="
+        updateCalculation('2');
+      ">2</button>
+
+      <button class="left-buttons" onclick="
+        updateCalculation('3');
+      ">3</button>
+
+      <button class="right-buttons" onclick="
+        updateCalculation(' + ');
+      ">+</button>
+    </p>
+
+    <p>
+      <button class="left-buttons" onclick="
+        updateCalculation('4');
+      ">4</button>
+
+      <button class="left-buttons" onclick="
+        updateCalculation('5');
+      ">5</button>
+
+      <button class="left-buttons" onclick="
+        updateCalculation('6');
+      ">6</button>
+
+      <button class="right-buttons" onclick="
+        updateCalculation(' - ');
+      ">-</button>
+    </p>
+
+    <p>
+      <button class="left-buttons" onclick="
+        updateCalculation('7');
+      ">7</button>
+
+      <button class="left-buttons" onclick="
+        updateCalculation('8');
+      ">8</button>
+
+      <button class="left-buttons" onclick="
+        updateCalculation('9');
+      ">9</button>
+
+      <button class="right-buttons" onclick="
+        updateCalculation(' * ');
+      ">*</button>
+    </p>
+
+    <p>
+      <button class="left-buttons" onclick="
+        updateCalculation('0');
+      ">0</button>
+
+      <button class="left-buttons" onclick="
+        updateCalculation('.');
+      ">.</button>
+
+      <button class="left-buttons" onclick="
+      
+        calculation = eval(calculation);
+
+      
+        displayCalculation();
+
+        localStorage.setItem('calculation', calculation);
+      ">=</button>
+
+      <button class="right-buttons" onclick="
+        updateCalculation(' / ');
+      ">/</button>
+    </p>
+
+    <p>
+      <button class="clear-button" onclick="
+        calculation = '';
+
+        // Display the calculation on the page
+        // instead of console.log
+        displayCalculation();
+
+        localStorage.setItem('calculation', calculation);
+      ">Clear</button>
+    </p>
+
+    <script>
+      let calculation = localStorage.getItem('calculation') || '';
+
+      // Display the calculation when the page first loads.
+      displayCalculation();
+
+      function updateCalculation(value) {
+        calculation += value;
+
+        // Display the calculation on the page
+        // instead of console.log
+        displayCalculation();
+
+        localStorage.setItem('calculation', calculation);
+      }
+
+      function displayCalculation() {
+        document.querySelector('.js-calculation')
+          .innerHTML = calculation;
+      }
+    </script>
+  </body>
+</html>
