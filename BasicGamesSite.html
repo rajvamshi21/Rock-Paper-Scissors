@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Hub</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game-selection {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 50px;
+      gap: 20px;
+    }
+
+    .game-button {
+      background-color: purple;
+      border: 2px solid gold;
+      color: white;
+      font-size: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .game-container {
+      display: none;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎮 Game Hub</h1>
+  <div class="game-selection">
+    <button class="game-button" onclick="showGame('rps')">Rock Paper Scissors</button>
+    <button class="game-button" onclick="showGame('coin')">Coin Toss</button>
+    <button class="game-button" onclick="showGame('tetris')">Tetris</button>
+    <button class="game-button" onclick="showGame('ludo')">Ludo</button>
+    <button class="game-button" onclick="showGame('snakes')">Snake & Ladders</button>
+  </div>
+
+  <div id="rps" class="game-container">
+    <h2>Rock Paper Scissors</h2>
+    <p>Pick a move:</p>
+    <button onclick="playRPS('rock')">✊</button>
+    <button onclick="playRPS('paper')">✋</button>
+    <button onclick="playRPS('scissors')">✌️</button>
+    <p id="rps-result"></p>
+    <p id="rps-score"></p>
+    <button onclick="resetRPS()">Reset</button>
+  </div>
+
+  <div id="coin" class="game-container">
+    <h2>Coin Toss</h2>
+    <button onclick="flipCoin()">Flip Coin</button>
+    <p id="coin-result"></p>
+  </div>
+
+  <div id="tetris" class="game-container">
+    <h2>Tetris (Placeholder)</h2>
+    <p>This is a placeholder for Tetris.</p>
+  </div>
+
+  <div id="ludo" class="game-container">
+    <h2>Ludo (Placeholder)</h2>
+    <p>This is a placeholder for Ludo.</p>
+  </div>
+
+  <div id="snakes" class="game-container">
+    <h2>Snake and Ladders (Placeholder)</h2>
+    <p>This is a placeholder for Snake and Ladders.</p>
+  </div>
+
+  <script>
+    function showGame(id) {
+      document.querySelectorAll('.game-container').forEach(div => div.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+
+    // Rock Paper Scissors
+    let rpsScore = { wins: 0, losses: 0, ties: 0 };
+
+    function playRPS(playerMove) {
+      const moves = ['rock', 'paper', 'scissors'];
+      const computerMove = moves[Math.floor(Math.random() * 3)];
+      let result = '';
+      if (playerMove === computerMove) result = 'Tie.';
+      else if (
+        (playerMove === 'rock' && computerMove === 'scissors') ||
+        (playerMove === 'paper' && computerMove === 'rock') ||
+        (playerMove === 'scissors' && computerMove === 'paper')
+      ) result = 'You win.';
+      else result = 'You lose.';
+
+      if (result === 'You win.') rpsScore.wins++;
+      else if (result === 'You lose.') rpsScore.losses++;
+      else rpsScore.ties++;
+
+      document.getElementById('rps-result').textContent = `Result: ${result}`;
+      document.getElementById('rps-score').textContent = `Wins: ${rpsScore.wins}, Losses: ${rpsScore.losses}, Ties: ${rpsScore.ties}`;
+    }
+
+    function resetRPS() {
+      rpsScore = { wins: 0, losses: 0, ties: 0 };
+      document.getElementById('rps-result').textContent = '';
+      document.getElementById('rps-score').textContent = '';
+    }
+
+    // Coin Toss
+    function flipCoin() {
+      const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
+      document.getElementById('coin-result').textContent = `You got: ${result}`;
+    }
+  </script>
+
+</body>
+</html>
