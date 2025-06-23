@@ -1,163 +1,156 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      body {
-        background-color: rgb(0, 0, 0);
-      }
-      .left-buttons {
-        background-color: rgb(59, 57, 59);
-        border: none;
-        height: 70px;
-        width: 70px;
-        border-radius: 70px;
-        color: white;
-        margin-right: 10px;
-        font-size: 45px;
-        margin-bottom: 10px;
-      }
-      .right-buttons {
-        background-color: rgb(252, 173, 26);
-        border: none;
-        height: 70px;
-        width: 70px;
-        border-radius: 70px;
-        color: white;
-        margin-right: 10px;
-        font-size: 45px;
-      }
-      .clear-button{
-        background-color: rgb(59, 57, 59);
-        font-size: 20px;
-        height: 70px;
-        width: 70px;
-        border-radius: 70px;
-        color: white;
-        border: none;
-        
-      }
-      .input-tab {
-        color: white;
-        font-size: 45px;
-      }
+<head>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-    </style>
-  </head>
-  <body>
-    <!-- Create an element to display the calculation. -->
+    .calculator {
+      text-align: center;
+    }
+
+    .input-tab {
+      font-size: 45px;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      height: 70px;
+      width: 70px;
+      border-radius: 35px;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .left-buttons {
+      background-color: rgb(59, 57, 59);
+    }
+
+    .right-buttons {
+      background-color: rgb(252, 173, 26);
+    }
+
+    .clear-button, .history-button {
+      background-color: rgb(59, 57, 59);
+      font-size: 16px;
+    }
+
+    .history {
+      margin-top: 20px;
+      text-align: left;
+      max-height: 150px;
+      overflow-y: auto;
+      background-color: #222;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
     <p class="js-calculation input-tab"></p>
 
-    <p>
-      <button class="left-buttons" onclick="
-        updateCalculation('1');
-      ">1</button>
+    <div class="buttons">
+      <button class="clear-button" onclick="clearCalc()">C</button>
+      <button class="left-buttons" onclick="updateCalculation('(')">(</button>
+      <button class="left-buttons" onclick="updateCalculation(')')">)</button>
+      <button class="right-buttons" onclick="updateCalculation(' / ')">/</button>
 
-      <button class="left-buttons" onclick="
-        updateCalculation('2');
-      ">2</button>
+      <button class="left-buttons" onclick="updateCalculation('7')">7</button>
+      <button class="left-buttons" onclick="updateCalculation('8')">8</button>
+      <button class="left-buttons" onclick="updateCalculation('9')">9</button>
+      <button class="right-buttons" onclick="updateCalculation(' * ')">*</button>
 
-      <button class="left-buttons" onclick="
-        updateCalculation('3');
-      ">3</button>
+      <button class="left-buttons" onclick="updateCalculation('4')">4</button>
+      <button class="left-buttons" onclick="updateCalculation('5')">5</button>
+      <button class="left-buttons" onclick="updateCalculation('6')">6</button>
+      <button class="right-buttons" onclick="updateCalculation(' - ')">-</button>
 
-      <button class="right-buttons" onclick="
-        updateCalculation(' + ');
-      ">+</button>
-    </p>
+      <button class="left-buttons" onclick="updateCalculation('1')">1</button>
+      <button class="left-buttons" onclick="updateCalculation('2')">2</button>
+      <button class="left-buttons" onclick="updateCalculation('3')">3</button>
+      <button class="right-buttons" onclick="updateCalculation(' + ')">+</button>
 
-    <p>
-      <button class="left-buttons" onclick="
-        updateCalculation('4');
-      ">4</button>
+      <button class="left-buttons" onclick="updateCalculation('0')">0</button>
+      <button class="left-buttons" onclick="updateCalculation('.')">.</button>
+      <button class="left-buttons" onclick="calculateResult()">=</button>
+      <button class="history-button" onclick="toggleHistory()">H</button>
 
-      <button class="left-buttons" onclick="
-        updateCalculation('5');
-      ">5</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.sin(')">sin</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.cos(')">cos</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.tan(')">tan</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.sqrt(')">√</button>
 
-      <button class="left-buttons" onclick="
-        updateCalculation('6');
-      ">6</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.pow(')">xʸ</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.log(')">log</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.exp(')">exp</button>
+      <button class="left-buttons" onclick="updateCalculation('Math.PI')">π</button>
+    </div>
 
-      <button class="right-buttons" onclick="
-        updateCalculation(' - ');
-      ">-</button>
-    </p>
+    <div class="history" style="display:none;" id="history-box"></div>
+  </div>
 
-    <p>
-      <button class="left-buttons" onclick="
-        updateCalculation('7');
-      ">7</button>
+  <script>
+    let calculation = localStorage.getItem('calculation') || '';
+    let history = JSON.parse(localStorage.getItem('history')) || [];
 
-      <button class="left-buttons" onclick="
-        updateCalculation('8');
-      ">8</button>
+    displayCalculation();
 
-      <button class="left-buttons" onclick="
-        updateCalculation('9');
-      ">9</button>
-
-      <button class="right-buttons" onclick="
-        updateCalculation(' * ');
-      ">*</button>
-    </p>
-
-    <p>
-      <button class="left-buttons" onclick="
-        updateCalculation('0');
-      ">0</button>
-
-      <button class="left-buttons" onclick="
-        updateCalculation('.');
-      ">.</button>
-
-      <button class="left-buttons" onclick="
-      
-        calculation = eval(calculation);
-
-      
-        displayCalculation();
-
-        localStorage.setItem('calculation', calculation);
-      ">=</button>
-
-      <button class="right-buttons" onclick="
-        updateCalculation(' / ');
-      ">/</button>
-    </p>
-
-    <p>
-      <button class="clear-button" onclick="
-        calculation = '';
-
-        // Display the calculation on the page
-        // instead of console.log
-        displayCalculation();
-
-        localStorage.setItem('calculation', calculation);
-      ">Clear</button>
-    </p>
-
-    <script>
-      let calculation = localStorage.getItem('calculation') || '';
-
-      // Display the calculation when the page first loads.
+    function updateCalculation(value) {
+      calculation += value;
       displayCalculation();
+      localStorage.setItem('calculation', calculation);
+    }
 
-      function updateCalculation(value) {
-        calculation += value;
+    function displayCalculation() {
+      document.querySelector('.js-calculation').innerHTML = calculation;
+    }
 
-        // Display the calculation on the page
-        // instead of console.log
-        displayCalculation();
+    function clearCalc() {
+      calculation = '';
+      displayCalculation();
+      localStorage.setItem('calculation', calculation);
+    }
 
-        localStorage.setItem('calculation', calculation);
+    function calculateResult() {
+      try {
+        let result = eval(calculation);
+        history.push(calculation + ' = ' + result);
+        localStorage.setItem('history', JSON.stringify(history));
+        calculation = result.toString();
+      } catch {
+        calculation = 'Error';
       }
+      displayCalculation();
+      localStorage.setItem('calculation', calculation);
+    }
 
-      function displayCalculation() {
-        document.querySelector('.js-calculation')
-          .innerHTML = calculation;
+    function toggleHistory() {
+      const box = document.getElementById('history-box');
+      if (box.style.display === 'none') {
+        box.style.display = 'block';
+        box.innerHTML = history.map(item => `<div>${item}</div>`).join('');
+      } else {
+        box.style.display = 'none';
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
 </html>
